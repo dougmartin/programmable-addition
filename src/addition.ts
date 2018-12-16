@@ -17,16 +17,49 @@ class Addition {
       }
     })
     const hole = new Volume({
-      width: `20'`,
+      width: `32'`,
       depth: `17'`,
       height: `6'`,
       offset: {
         from: earth,
-        width: `10'`,
+        width: `4'`,
         height: `2'`
       }
     })
-    this.excavation = new Excavation({earth, hole})
+    const footings = [
+      new Volume({
+        width: `2'`,
+        depth: `14'`,
+        height: `18"`,
+        offset: {
+          from: hole,
+          width: `3'`,
+          height: `-18"`
+        }
+      }),
+      new Volume({
+        width: `2'`,
+        depth: `14'`,
+        height: `18"`,
+        offset: {
+          from: hole,
+          width: `26'`,
+          height: `-18"`
+        }
+      }),
+      new Volume({
+        width: `21'`,
+        depth: `2'`,
+        height: `18"`,
+        offset: {
+          from: hole,
+          width: `5'`,
+          height: `-18"`,
+          depth: `12'`
+        }
+      }),
+    ];
+    this.excavation = new Excavation({earth, hole, footings})
   }
 
   render3d(scene: BABYLON.Scene) {

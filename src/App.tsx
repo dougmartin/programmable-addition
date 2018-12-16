@@ -50,8 +50,8 @@ class App extends Component {
       (earth.height.floatValueInInches / 2) + earthOffset.y,
       (earth.depth.floatValueInInches / 2) + earthOffset.z
     )
-    const cameraRadius = Math.max(earth.width.floatValueInInches, earth.depth.floatValueInInches) * 2;
-    const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 3, cameraRadius, cameraVector, scene); // BABYLON.Vector3.Zero(), scene)
+    const cameraRadius = Math.max(earth.width.floatValueInInches, earth.depth.floatValueInInches) * 1.5;
+    const camera = new BABYLON.ArcRotateCamera("camera1", (6/4) * Math.PI, Math.PI / 3, cameraRadius, cameraVector, scene); // BABYLON.Vector3.Zero(), scene)
     camera.attachControl(canvas, true);
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)

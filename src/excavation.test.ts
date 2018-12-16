@@ -24,7 +24,19 @@ it('works', () => {
       height: `10'`
     }
   })
-  const ex = new Excavation({earth, hole})
+  const footings = [
+    new Volume({
+      width: `2'`,
+      depth: `14'`,
+      height: `18"`,
+      offset: {
+        from: hole,
+        width: `3'`,
+        depth: `6'`
+      }
+    })
+  ];
+  const ex = new Excavation({earth, hole, footings})
   expect(ex.earth).toBe(earth);
   expect(ex.hole).toBe(hole);
 })

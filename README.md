@@ -160,8 +160,18 @@ and then using [this documentation](https://doc.babylonjs.com/resources/babylonj
 
 Now that we have a small canvas rendering in the app I then updated the css to make the babylon.js canvas element the full size of the page.
 
-Once that was all working I updated the code to generate the volume meshs and then created the CSG volumes from the meshes and finally and changed App.tsx to use those volumes.  I used [this CSG demo code](https://github.com/BabylonJS/Website/tree/master/Demos/CSG) to get me there but it was a long road.  I didn't really take notes while I was doing this as there was a lot of trial and error.
+Once that was all working I updated the code to generate the volume meshs and then created the CSG volumes from the meshes and finally and changed App.tsx to use those volumes.  I used [this CSG demo code](https://github.com/BabylonJS/Website/tree/master/Demos/CSG) to get me there but it was a long road.  I didn't really take notes while I was doing this as there was a lot of trial and error.  In the end I defined a `createMesh` method on volumes that both created the mesh and positioned it.  Since babylon.js creates cubic meshes with the local origin in center I had to initially position the mesh at 1/2 of the x, y, and z and then add the offsets the by recursivly calling the `meshOffset` method for the `offset.from` instances.  You can see the code in `volume.ts`.
 
 Here is a screenshot of the rendered excavation.  Note the axis drawn on the rendering as I was going a little kooky remembering where the origin was.
 
 ![First excavation screenshot](src/screenshots/step5.png)
+
+## Step 6: Add the footings to the excavation
+
+Now that the big hole is rendered I need to add the footings to the excavation.  This is more CSG work but I thought I'd make it a separate step to reduce the complications of the initial work.  For now I'm just going to create three volumes for each of the footings.
+
+This was pretty straightforward - I added an array of volumes for the footings and then subtracted them from the CSG after I updated the hole to be the correct size.  I also changed the camera to point to the open excavation so that the footing holes are more easily seen.  I'm noticing I'm going a lot of measurement math in my head instead of letting the computer do it.  In the next step I'm going to add some methods to measurement to automate this.
+
+Here is a screenshot of the rendered excavation.  Note the axis drawn on the rendering as I was going a little kooky remembering where the origin was.
+
+![Second excavation screenshot](src/screenshots/step6.png)
