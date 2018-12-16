@@ -21,3 +21,59 @@ The measurements will be written as template literals, eg `23' 1/4"`.
 4. TypeScript+React and a yet unknown 3d library will be used.  I'm doing this in a browser so that
 I can easily iterate on the app and so I can share the results.
 
+## Steps
+
+1. Setup app
+
+Normally I like to have control of my build setup but for this project I'm just going to use [create-react-app](https://facebook.github.io/create-react-app/).
+
+Since I already had this repo created to write this README setting up the app was easy:
+
+```
+cd programming-addition
+npx create-react-app .
+... wait a crazy amount of time for all the dependencies to resolve..
+yarn add typescript @types/node @types/react @types/react-dom @types/jest
+... rename src/index.js and src/App.js to .tsx ...
+npm start
+```
+
+`create-react-app` detected that TypeScript was being used so it created a tsconfig.json file
+that I then updated include:
+
+```
+"noImplicitAny": true,
+"strictNullChecks": true
+```
+
+I then restarted `npm start` to insure the `tsconfig.json` changes were picked up.
+
+`create-react-app` also overwrote my README with an expanded version of the following:
+
+### Available Scripts
+
+#### `npm start`
+
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
+
+#### `npm test`
+
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+#### `npm run build`
+
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+
