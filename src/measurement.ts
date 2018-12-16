@@ -21,7 +21,7 @@ export class Measurement {
   constructor (spec: string) {
     const m = spec.match(specRegex);
     if (!m || (!m[MatchIndex.FeetMarker] && !m[MatchIndex.InchMarker])) {
-      throw new Error("Invalid spec");
+      throw new Error("Invalid measurement");
     }
 
     this.wholeInches = 0;

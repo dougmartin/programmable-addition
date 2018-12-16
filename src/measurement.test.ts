@@ -6,13 +6,13 @@ export default undefined
 it('fails on empty specs', () => {
   expect(() => {
     new Measurement(``)
-  }).toThrowError("Invalid spec")
+  }).toThrowError("Invalid measurement")
 })
 
 it('fails on unitless specs', () => {
   expect(() => {
     new Measurement(`24`)
-  }).toThrowError("Invalid spec")
+  }).toThrowError("Invalid measurement")
 })
 
 it('parses whole feet', () => {

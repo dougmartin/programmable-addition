@@ -71,7 +71,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 I need an imperial measurement system between points defined by strings that allow me to do algebraic operations on two or more measurements with fractional elements and then at the end convert the result to the final float value for whatever 3d models library I choose.  The reason I need to keep things as fractions is something simple as converting 1/2 inch to feet creates a repeating decimal fraction of 0.04166 and the reason I want strings is because it will reduce typing.
 
-After searching npmjs.org I found a few fraction libaries but they were all designed around the fraction being an object with a value.  Instead I want the measurements to be used as relations between either the origin or another point and then have a resolver that can process a set of measurements and produce a final value. Since I couldnt find a match I'm writing my own.
+After searching npmjs.org I found a few fraction libaries but they were all designed around the fraction being an object with a value.  Instead I want the measurements to be used as relations between either the origin or another point and then have a resolver that can process a set of measurements and produce a final value. Since I couldnt find a match so I wrote the start of my own library in a few minutes.
 
 You can find the code in `src/measurement.ts` with tests in `src/measurement.test.ts`.  I took advantage of the Jest VSCode plugin to run and debug the tests within the browser.  An example test that shows the API is:
 
@@ -83,4 +83,22 @@ it('parses feet plus fractional inches', () => {
 })
 ```
 
+## Step 3: Create a (cubic) volume type
 
+Since this **isn't** a general purpose app and I'm not going to have anything but cubic volumes I can model all objects as having 8 points and 6 faces.  I'm going to use the model to both generate the points for the final 3d and 2d visualizations and to generate measurements for the amount of dirt that will be removed and concrete that will be poured.
+
+The last time I did any real 3d modeling programming was 1992 in my Computer Graphics class in undergrad so I'm pretty much operating with little knowledge and a limited vocabulary.  I'm sure there are existing 3d libraries I could adapt for the data structure but I want it to use my measurement system so I'm writing my own.  I may regret this when I try interface it with the 3d visualization library I pick but given how easy it is to refactor TypeScript I think I'll be fine.  It took me another few minutes to create the start of the library.
+
+You can find the code in `src/volume.ts` with tests in `src/volume.test.ts`.  An example test that shows the API is:
+
+```
+it('works with unit volumes', () => {
+  const v = new Volume({
+    width: `1'`,
+    height: `1'`,
+    depth: `1'`
+  });
+  expect(v.floatValueInCubicFeet).toBe(1);
+  expect(v.floatValueInCubicInches).toBe(12*12*12);
+})
+```
