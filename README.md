@@ -1,6 +1,6 @@
 # Programmable House Addition
 
-The purpose of this app is to explore if I can programmatically define an addition to my house and generate both 3d visualizations and 2d plans from the model it generates.
+The purpose of this app is to explore if I can programmatically define an addition to my house and generate both 3d visualizations and 2d plans from the model it generates.  The addition that I'm planning is a simple one-story addon to the north side of my [American Foursquare](https://en.wikipedia.org/wiki/American_Foursquare) house.  The addition will be inset from the north wall to make it more visually pleasing.
 
 I've tried many consumer and "pro-sumer" grade 3d home CAD tools and found them both too complex for my needs and at the same time lacking features I need, mostly around the 2d plans that are
 generated.
@@ -83,7 +83,7 @@ it('parses feet plus fractional inches', () => {
 })
 ```
 
-## Step 3: Create a (cubic) volume type
+## Step 3: Create a (cubic) volume model
 
 Since this **isn't** a general purpose app and I'm not going to have anything but cubic volumes I can model all objects as having 8 points and 6 faces.  I'm going to use the model to both generate the points for the final 3d and 2d visualizations and to generate measurements for the amount of dirt that will be removed and concrete that will be poured.
 
@@ -102,3 +102,40 @@ it('works with unit volumes', () => {
   expect(v.floatValueInCubicInches).toBe(12*12*12);
 })
 ```
+
+You'll notice I'm using width, height and depth instead of x, y, and z.  This makes sense to me as I'm designing the addition I'm thinking of it in 2d plan view (overhead iew) with the origin being in the top left so width is x, height is y and depth is z.
+
+## Step 4: Create the basement excavation model
+
+Now that I have a measurement system and a volume representation I'll start where all construction projects start: in the ground.  The goal for this step is to create a model of the basement excavation.
+
+Instead of generalizing I'm going to create a class for it for now, maybe it can be refactored as we go on.  I'm going to leave excavation of the basement wall footings until a later step.  I'm also going to not add tests for invalid volumes since this is a one off and I'll see any issues when it is eventually rendered.
+
+I need to be able to in general define relationships between volumes and specifically in the excavation define subtraction of the hole from the earth.  To do this I'm going to add an optional offset parameter to the volume options.  The offset has one or more width, height and depth measurements and also defines what it is offset from, which is either another volumes origin or the world origin.  To enable this I've also created a `OriginType` with value `"origin"` and exported a constant with that value and I've added negative measurements.
+
+You can find the excavation model code in `src/excavation.ts` with tests in `src/excavation.test.ts`.  An example of the API is:
+
+```
+  const earth = new Volume({
+    width: `40'`,
+    height: `40'`,
+    depth: `8'`,
+    offset: {
+      from: Origin,
+      width: `-10'`
+    }
+  })
+  const hole = new Volume({
+    width: `20'`,
+    height: `20'`,
+    depth: `6'`,
+    offset: {
+      from: earth,
+      width: `10'`,
+      height: `10'`
+    }
+  })
+  const ex = new Excavation({earth, hole})
+```
+
+You can also see updated tests for the volumes to handle the offsets and measurements to handle negatives.

@@ -44,3 +44,27 @@ it('parses feet plus fractional inches', () => {
   expect(m.floatValueInInches).toBe(24.5);
   expect(m.floatValueInFeet).toBeCloseTo(2.04166)
 })
+
+it('parses negative whole inches', () => {
+  const m = new Measurement(`-24"`)
+  expect(m.floatValueInInches).toBe(-24)
+  expect(m.floatValueInFeet).toBe(-2)
+})
+
+it('parses negative whole feet and inches', () => {
+  const m = new Measurement(`-24' 24"`)
+  expect(m.floatValueInInches).toBe(-((24*12)+24));
+  expect(m.floatValueInFeet).toBe(-26)
+})
+
+it('parses negative fractional inches', () => {
+  const m = new Measurement(`-1/2"`)
+  expect(m.floatValueInInches).toBe(-0.5);
+  expect(m.floatValueInFeet).toBeCloseTo(-0.04166)
+})
+
+it('parses negative feet plus fractional inches', () => {
+  const m = new Measurement(`-2' 1/2"`)
+  expect(m.floatValueInInches).toBe(-24.5);
+  expect(m.floatValueInFeet).toBeCloseTo(-2.04166)
+})

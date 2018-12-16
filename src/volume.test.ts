@@ -1,4 +1,4 @@
-import { Volume } from "./volume";
+import { Volume, Origin } from "./volume";
 
 // have to add because CRA sets --isolatedModules to true
 export default undefined
@@ -21,4 +21,20 @@ it('works with unit volumes', () => {
   });
   expect(v.floatValueInCubicFeet).toBe(1);
   expect(v.floatValueInCubicInches).toBe(12*12*12);
+  expect(v.offset).not.toBeDefined();
+})
+
+it('works with offset volumes', () => {
+  const v = new Volume({
+    width: `1'`,
+    height: `1'`,
+    depth: `1'`,
+    offset: {
+      from: Origin,
+      width: `1"`,
+      height: `1"`,
+      depth: `1"`,
+    }
+  });
+  expect(v.offset).toBeDefined();
 })
