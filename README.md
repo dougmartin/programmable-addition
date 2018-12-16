@@ -103,7 +103,7 @@ it('works with unit volumes', () => {
 })
 ```
 
-You'll notice I'm using width, height and depth instead of x, y, and z.  This makes sense to me as I'm designing the addition I'm thinking of it in 2d plan view (overhead iew) with the origin being in the top left so width is x, height is y and depth is z.
+You'll notice I'm using width, height and depth instead of x, y, and z.  This makes sense to me as I'm designing the addition I'm thinking of it in 2d plan view (overhead iew) with the origin being in the top left so width is x, height is z and depth is y. (I updated this after Step 5 below to swap height and depth based on babylon.js ideas of those parameters)
 
 ## Step 4: Create the basement excavation model
 
@@ -118,8 +118,8 @@ You can find the excavation model code in `src/excavation.ts` with tests in `src
 ```
   const earth = new Volume({
     width: `40'`,
-    height: `40'`,
-    depth: `8'`,
+    height: `8'`,
+    depth: `40'`,
     offset: {
       from: Origin,
       width: `-10'`
@@ -127,8 +127,8 @@ You can find the excavation model code in `src/excavation.ts` with tests in `src
   })
   const hole = new Volume({
     width: `20'`,
-    height: `20'`,
-    depth: `6'`,
+    height: `6'`,
+    depth: `20'`,
     offset: {
       from: earth,
       width: `10'`,
@@ -139,3 +139,29 @@ You can find the excavation model code in `src/excavation.ts` with tests in `src
 ```
 
 You can also see updated tests for the volumes to handle the offsets and measurements to handle negatives.
+
+## Step 5: Visualize the excavation
+
+Since I want to visualize a volume being removed from another volume I need to find a 3d library that enables [constructive solid geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry) (at least I remembered that much from my computer graphics class all those years ago).  Looking around at 3d libraries with the following requirements:
+
+1. Enables 3d visualizations
+2. Written in TypeScript (big plus) or has TypeScript definitions (so so)
+3. Has support for CSG
+
+lead me to [babylon.js](https://www.babylonjs.com/) after a few minutes searching. So for now that is what I'll use.  I'll translate the volume offsets into [babylon.js' CSG API](https://doc.babylonjs.com/api/classes/babylon.csg).
+
+First I installed babylonjs:
+
+```
+yarn add babylonjs
+```
+
+and then using [this documentation](https://doc.babylonjs.com/resources/babylonjs_and_reactjs) I added a scale.tsx file (with a little tweaking to remove the TypeScript no default initializer errors) and converted the generated `create-react-app` App.ts to first render the sphere in the documentation.  Unfortunately I found that the most recent version of babylon.js at this time blows up with TypeScript greater than 3.1 so I had to change package.json to `"babylonjs": "^4.0.0-alpha.12",`.  This causes a warning with `create-react-app` when it builds though since there are 3 optional dependencies in version 4 and `create-react-app` has no way (at this time) to register externals in webpack.
+
+Now that we have a small canvas rendering in the app I then updated the css to make the babylon.js canvas element the full size of the page.
+
+Once that was all working I updated the code to generate the volume meshs and then created the CSG volumes from the meshes and finally and changed App.tsx to use those volumes.  I used [this CSG demo code](https://github.com/BabylonJS/Website/tree/master/Demos/CSG) to get me there but it was a long road.  I didn't really take notes while I was doing this as there was a lot of trial and error.
+
+Here is a screenshot of the rendered excavation.  Note the axis drawn on the rendering as I was going a little kooky remembering where the origin was.
+
+![First excavation screenshot](src/screenshots/step5.png)

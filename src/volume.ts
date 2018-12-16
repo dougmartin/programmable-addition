@@ -1,4 +1,5 @@
 import { Measurement } from "./measurement";
+import * as BABYLON from 'babylonjs';
 
 export type OriginType = "origin"
 export const Origin: OriginType = "origin";
@@ -52,5 +53,44 @@ export class Volume {
 
   get floatValueInCubicFeet() {
     return this.width.floatValueInFeet * this.height.floatValueInFeet * this.depth.floatValueInFeet;
+  }
+
+  toString() {
+    return `${this.width.floatValueInInches}" x ${this.height.floatValueInInches}" x ${this.depth.floatValueInInches}"`
+  }
+
+  get meshOffset() {
+    const {offset} = this;
+    const meshOffset = {x: 0, y: 0, z: 0}
+    if (offset) {
+      const fromOffset = offset.from !== Origin ? offset.from.meshOffset : {x: 0, y: 0, z: 0}
+      meshOffset.x = fromOffset.x + (offset.width ? offset.width.floatValueInInches : 0);
+      meshOffset.y = fromOffset.y + (offset.height ? offset.height.floatValueInInches : 0);
+      meshOffset.z = fromOffset.z + (offset.depth ? offset.depth.floatValueInInches : 0);
+    }
+    return meshOffset;
+  }
+
+  get meshPosition() {
+    return {
+      x: this.width.floatValueInInches / 2,
+      y: this.height.floatValueInInches / 2,
+      z: this.depth.floatValueInInches / 2
+    }
+  }
+
+  createMesh(options?: {faceColors?: BABYLON.Color4[]}) {
+    const mesh = BABYLON.MeshBuilder.CreateBox("", {
+      width: this.width.floatValueInInches,
+      height: this.height.floatValueInInches,
+      depth: this.depth.floatValueInInches,
+      faceColors: options && options.faceColors
+    });
+    const position = this.meshPosition;
+    const offset = this.meshOffset;
+    mesh.position.x = position.x + offset.x;
+    mesh.position.y = position.y + offset.y;
+    mesh.position.z = position.z + offset.z;
+    return mesh;
   }
 }

@@ -1631,6 +1631,11 @@ babylon@^6.18.0:
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
   integrity sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==
 
+babylonjs@^4.0.0-alpha.12:
+  version "4.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-4.0.0-alpha.14.tgz#c5569987bf32b4a82f3f6d91e4255d2a5df9201e"
+  integrity sha512-A6lHc4tEVnf4f5SgFCWRyqvzCD8tZ4g+ct3sMXEn2DT64k+Z0Sz8ErPcrW5sxINsPoCJibUfX8zh8bTKXfBcxg==
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
